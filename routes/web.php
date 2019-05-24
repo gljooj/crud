@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+ Route::get('/', 'UsersController@welcomeView');
+Route::group(['prefix' => 'controluser'], function(){
+    Route::post('/controlUser', 'UsersController@controlUser');
+
 });
