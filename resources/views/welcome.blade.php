@@ -7,6 +7,8 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
@@ -74,9 +76,7 @@
                 </div>
                 <div>
                     <input type="radio" value="cadastrar" onclick="mostra('ma')" name="type">Cadastrar</input>
-                    <input type="radio" value="editar" onclick="mostra('mb')" name="type">Editar</input>
-                    <input type="radio" value="remover" onclick="mostra('mc')" name="type">Remover</input>
-                    <input type="radio" value="relatório" onclick="mostra('md')" name="type">Gerar relatório</input>
+                    <input type="radio" value="editar" onclick="mostra('mb')" name="type">Listar, editar e remover</input>
                 </div>
                     @if(session('message'))
                     <div class="alert alert-success alert-dismissible">
@@ -89,7 +89,15 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     {{session('error')}}
                     <div></div>
-                    @endif        
+                    @endif
+                    @if(session('messages'))
+                    <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    @foreach(session('messages') as $message)
+                    {{$message}}<br>
+                    @endforeach
+                    </div>
+                    @endif             
                 <div>
                     <form method="post" id="regis">
                         {{ csrf_field() }}
@@ -130,36 +138,51 @@
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
                                 </select>
-                                <input name="cadastro" type="hidden" value="1"></input>
+                                <input name="register" type="hidden" value="1"></input>
+
                             </div>
                         </div>
                         <button type="submit" formaction="/controluser/controlUser">Cadastrar</button>
                     </div>
                     </form>
-                    <div id="mb" class="hidden">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>id</th>
-                                    <th>Nome</th>
-                                    <th>Sobrenome</th>
-                                    <th>Genero</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($datas as $data)
-                                <tr>
-                                    <td><a>{{$data->id}}</a></td>
-                                    <td><a>{{$data->first_name}}</a></td>
-                                    <td><a>{{$data->last_name}}</a></td>
-                                    <td><a>{{$data->gender}}</a></td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{$datas->render()}}
-                    </div>
+                    
+                    <form method="get" id="edit">
+                        <div id="mb" class="hidden">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>Nome</th>
+                                        <th>Sobrenome</th>
+                                        <th>Genero</th>
+                                        <th>Idade</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($datas as $data)
+                                    <tr>
+                                        <td><a>{{$data->id}}</a></td>
+                                        <td><a>{{$data->first_name}}</a></td>
+                                        <td><a>{{$data->last_name}}</a></td>
+                                        <td><a>{{$data->gender}}</a></td>
+                                        <td><a>{{$data->age}}</a></td>
+                                        <td><button type="submit"  formaction="/controluser/editUser/{{$data->id}}">Editar</button></td>
+                                        <td><button type="button" onclick="removeAlert('{{$data->id}}')">Remover</button></td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{$datas->render()}}
+                        </div>
+                    </form>
                 </div>
+
+
+
+
+
                 
             
             </div>
@@ -173,6 +196,14 @@
 
 </style>
 <script>
+    function removeAlert(id){
+        if (confirm("Tem certeza que deseja excluir ?"))
+          {
+            document.getElementById("edit").action = "/controluser/remove/"+id;
+            document.getElementById("edit").submit();
+          }
+    }
+
 function mostra(id) {
     some();
     document.getElementById(id).style.display = 'inline';
@@ -182,7 +213,6 @@ function some() {
     document.getElementById("ma").style.display = 'none';
     document.getElementById("mb").style.display = 'none';
     //document.getElementById("mc").style.display = 'none';
-    //document.getElementById("md").style.display = 'none';
     
 }
 </script>
