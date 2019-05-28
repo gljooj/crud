@@ -1,5 +1,18 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
+Ao baixar o projeto de um composer install em seu terminal/cmd,
+logo após isso ainda no terminal/cmd execute o comando php artisan migrate
+
+Após isso já está tudo certo.
+
+//English sub
+After download the project, open your terminal/cmd and write composer install,
+Right after this, still in the terminal/cmd execute the command php artisan migrate.
+
+by - Gabriel Jesus
+email: gabrielthe13@hotmail.com
+
+
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
