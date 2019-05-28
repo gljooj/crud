@@ -76,7 +76,7 @@
                 </div>
                 <div>
                     <input type="radio" value="cadastrar" onclick="mostra('ma')" name="type">Cadastrar</input>
-                    <input type="radio" value="editar" onclick="mostra('mb')" name="type">Listar, editar e remover</input>
+                    <input type="radio" value="editar" onclick="mostra('mb')" name="type">Listar Funcionarios, editar e remover</input>
                 </div>
                     @if(session('message'))
                     <div class="alert alert-success alert-dismissible">
