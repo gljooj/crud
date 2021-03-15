@@ -1,13 +1,27 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-Ao baixar o projeto de um composer install em seu terminal/cmd,
-logo após isso ainda no terminal/cmd execute o comando php artisan migrate
+## HOW TO RUN
+Ao clonar o projeto escreva os seguinte comando no seu terminal:
+    - composer install --ignore-platform-reqs
+    - php artisan key:generate
 
-Após isso já está tudo certo.
+Após isso verifique as configs de banco seu .env e por fim escreva o seguinte comando em seu terminal:
+    - php artisan migrate
 
-//English sub
-After download the project, open your terminal/cmd and write composer install,
-Right after this, still in the terminal/cmd execute the command php artisan migrate.
+Após isso já está tudo certo para usar o projeto bastar escrever:
+    - php artisan server
+
+##English sub
+After clone the project write the follow command's in you terminal:
+    - composer install --ignore-platform-reqs
+    - php artisan key:generate
+
+After this verify your configs database in .env and finally write the follow command in your terminal:
+    - php artisan migrate
+
+After this is already, to run the project just write:
+    - php artisan server
+
 
 by - Gabriel Jesus
 email: gabrielthe13@hotmail.com
