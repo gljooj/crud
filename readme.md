@@ -11,7 +11,7 @@ Após isso verifique as configs de banco seu .env e por fim escreva o seguinte c
 Após isso já está tudo certo para usar o projeto bastar escrever:
     - php artisan server
 
-##English sub
+## English sub
 After clone the project write the follow command's in you terminal:
     - composer install --ignore-platform-reqs
     - php artisan key:generate
