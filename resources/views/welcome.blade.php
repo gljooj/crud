@@ -72,11 +72,11 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    Oque deseja ?
+                    O que deseja?
                 </div>
                 <div>
-                    <input type="radio" value="cadastrar" onclick="mostra('ma')" name="type">Cadastrar</input>
-                    <input type="radio" value="editar" onclick="mostra('mb')" name="type">Listar Funcionarios, editar e remover</input>
+                    <input type="radio" value="cadastrar" onclick="mostra('ma')" name="type"> Cadastrar</input>
+                    <input type="radio" value="editar" onclick="mostra('mb')" name="type"> Listar Funcionarios, editar e remover</input>
                 </div>
                     @if(session('message'))
                     <div class="alert alert-success alert-dismissible">

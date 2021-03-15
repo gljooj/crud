@@ -73,7 +73,6 @@ class UsersController extends Controller
 	    	$editedGender = $request['gender'];
 			$editedAge = $request['age'];
 	    	$datas = User::where('id', $id)->first();
-	    	$find = User::where('id', $id)->first();
 	    	$log = [];
 	    	if(ctype_alpha($editedName) && ctype_alpha($editedLastName)){
 		    	if($editedName != $datas->first_name){
@@ -103,7 +102,7 @@ class UsersController extends Controller
 	    	}else{
 	    		$log[] = 'Nome e Sobrenome deve conter apenas letras';
 	    		$datas = User::paginate(5);
-	    		return view('editing')->with('find', $find)->with('messages',$log);
+	    		return view('editing')->with('find', $datas)->with('messages',$log);
 	    	}
 
 	    	$datas->save();
@@ -115,7 +114,7 @@ class UsersController extends Controller
     		
     	} catch (Exception $e) {
     		$log[] = 'Erro ao Editar usuario, erro '.$e;
-	    	return view('editing')->with('find', $find)->with('messages',$log);
+	    	return view('editing')->with('find', $datas)->with('messages',$log);
     	}
     }
 
@@ -132,27 +131,4 @@ class UsersController extends Controller
     	}
     }
 
-    public function QuestaoDois()
-    {	
-    	$s = 'aeiaaioooau';
-    	$words = str_split($s);
-    	//dd($words);
-    	$i = 0;
-    	$ret = 0;
-    	$has = false;
-
-    	foreach ($words as $w) {
-    		if($w == $s[$i]){
-    			$ret++;
-    		}else if($w == $s[$i +1]){
-    			$ret++;
-    			$i++;
-    		}
-    	}
-    	if($has){
-        return $ret;	
-		}else{
-			return 0;
-		}
-    }
 }
