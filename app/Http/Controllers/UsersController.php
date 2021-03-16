@@ -12,11 +12,14 @@ use App\User;
 
 class UsersController extends Controller
 {
+	public $datas;
+	public function __construct(){
+		$this->datas = User::paginate(5);
+	}
+	
 	public function welcomeView($log = null){
-		//dd($log);
-		$datas = User::get();
-    	$datas = User::paginate(5);
-    	//dd($log);
+		
+    	$datas = $this->datas;
     	if(isset($log)){
 			return redirect('/')->with('datas', $datas)->with('messages', $log);
     	}else{
@@ -24,38 +27,53 @@ class UsersController extends Controller
     	}
   
 	}
+	public function verifyData($request){
+		$name = $request['first_name'];
+		$lastName = $request['first_name'];
+		$age = $request['age'];
+		if(!ctype_alpha($name) || !ctype_alpha($lastName) || $age <= 0)
+		{
+			return true;
+		}
+		return false;
+
+	}
+	public function createUserReturn($request){
+		if(User::create($request->all())){
+			return back()->with('message', 'Cadastro do usuario '.$request['first_name'].' feito com sucesso')->with('datas',$this->datas); 			
+		}else{
+			return back()->with('error', 'Erro ao cadastrar usuario '.$request['first_name'])->with('datas',$this->datas);	
+		}
+	}
+
+	public function registerUser($request){
+		$has_data_fail = $this->verifyData($request);
+		$has_empty_key = false;
+		foreach ($request->all() as $key => $value) {
+			if($request[$key] != '_token') continue;
+			if( isset( $request[$key] ) ) {
+				$has_empty_key = true;
+				break;
+			}
+		}
+		if($has_empty_key == false && $has_data_fail == false)
+		{
+			return $this->createUserReturn($request);
+		}	
+		
+		return back()->with('error', 'Erro ao cadastrar usuario, por favor preencher todos os campos')->with('datas',$this->datas);
+			
+	
+	}
+
     public function controlUser(Request $request, $edit = null){
-    	//dd('a');
     	try{
-    		$datas = User::paginate(5);
-	    	$name = $request['firstName'];
-	    	$lastName = $request['lastName'];
-	    	$gender = $request['gender'];
-			$age = $request['age'];
 			$cad = $request['register'];
-			$edit = $request['edit'];
 			if($cad == 1){
-				if(isset($name) && isset($lastName) && isset($age)){
-					if(ctype_alpha($name) || ctype_alpha($lastName) || $age >= 0){
-						$register = new User;
-						$register->first_name = $name;
-						$register->last_Name = $lastName;
-						$register->age = $age;
-						$register->gender = $gender;
-						if($register->save()){
-							return back()->with('message', 'Cadastro do usuario '.$name.' feito com sucesso')->with('datas',$datas); 			
-						}else{
-							return back()->with('error', 'Erro ao cadastrar usuario '.$name)->with('datas',$datas);	
-						}	
-					}else{
-							return back()->with('error', 'Erro ao cadastrar usuario '.$name.' por favor inserir apenas letras alfabeticas e idade valida')->with('datas',$datas);	
-						}	
-				}else{
-					return back()->with('error', 'Erro ao cadastrar usuario, por favor preencher todos os campos')->with('datas',$datas);
-				}
+				return $this->registerUser($request);
 			}
     	}catch(exception $e){
-    			return back()->with('error', 'Erro ao cadastrar usuario '.$name)->with('datas',$datas);
+			return back()->with('error', 'Erro ao cadastrar usuario '.$name)->with('datas',$this->datas);
     	}
 
     }
@@ -65,69 +83,49 @@ class UsersController extends Controller
     	return view('editing')->with('find',$find);
     }
 
-    public function datasEdited(Request$request){
-    	try {
-	    	$id = $request['id'];
-	    	$editedName = $request['first_name'];
-	    	$editedLastName = $request['last_name'];
-	    	$editedGender = $request['gender'];
-			$editedAge = $request['age'];
-	    	$datas = User::where('id', $id)->first();
-	    	$log = [];
-	    	if(ctype_alpha($editedName) && ctype_alpha($editedLastName)){
-		    	if($editedName != $datas->first_name){
-		    		$datas->first_name = $editedName;
-		    		$log[] ='Nome alterado para '.$editedName;
-		    	}else{
-		    		$log[] = 'O nome não foi alterado';
-		    	}
-		    	if($editedLastName != $datas->last_name){
-		    		$datas->last_name = $editedLastName;
-		    		$log[] ='Sobrenome alterado para '.$editedLastName;
-		    	}else{
-		    		$log[] = 'O sobrenome não foi alterado';
-		    	}
-		    	if($editedGender != $datas->gender){
-		    		$datas->gender = $editedGender;
-		    		$log[] ='Genero alterado para '.$editedGender;
-		    	}else{
-		    		$log[] = 'Genero não foi alterado';
-		    	}
-		    	if($editedAge != $datas->age){
-		    		$datas->age = $editedAge;
-		    		$log[] ='Idade alterada para '.$editedAge;
-		    	}else{
-		    		$log[] = 'A Idade não foi alterada';
-		    	}	    		
-	    	}else{
-	    		$log[] = 'Nome e Sobrenome deve conter apenas letras';
-	    		$datas = User::paginate(5);
-	    		return view('editing')->with('find', $datas)->with('messages',$log);
-	    	}
+	public function verifyDatasToEdit($data, $request){
+		$log = [];
+		foreach ($request as $key => $value) {
+			if ($key != '_token'){
+				if ($request[$key] == $data[$key]){
+					continue;
+				}
+				$data[$key] = $value;
+				$log[] = ucfirst($key)." alterado para $value";
+			}
+		}
+		$log = empty($log) ? ['Nenhum dado atualizado'] : $log; 
+		$data->save();
+		return $log;
+		
+	}
 
-	    	$datas->save();
-	    	$datas = User::paginate(5);
+    public function dataEdited(Request $request){
+    	try {
+	    	$data = User::where('id', $request['id'])->first();
+
+	    	$response = $this->verifyDatasToEdit($data, $request->all());
 	    	
-	    	return redirect('controluser')->with('data', $datas)->with('messages',$log);
-	    	// return redirect('/')->with('messages',$log)->with('datas',$datas);
+	    	$data = User::paginate(5);
 	    	
-    		
+	    	return redirect('controluser')->with('data', $data)->with('messages',$response);
+
     	} catch (Exception $e) {
     		$log[] = 'Erro ao Editar usuario, erro '.$e;
-	    	return view('editing')->with('find', $datas)->with('messages',$log);
+	    	return view('editing')->with('find', $data)->with('messages',$log);
     	}
     }
 
     public function remove($id){
     	try {
 	    	$log = [];
-	    	$datas = User::where('id', $id)->first();
-	    	$datas->delete();
-	    	$datas = User::paginate(5);
-	    	return back()->with('message', 'Usuario removido com sucesso')->with('datas',$datas);
+	    	$data = User::where('id', $id)->first();
+	    	$data->delete();
+	    	$data = User::paginate(5);
+	    	return back()->with('message', 'Usuario removido com sucesso')->with('datas',$this->datas);
     		
     	} catch (Exception $e) {
-    		return back()->with('error', 'Erro ao remover usuario '.$name)->with('datas',$datas);
+    		return back()->with('error', 'Erro ao remover usuario '.$name)->with('datas',$this->datas);
     	}
     }
 

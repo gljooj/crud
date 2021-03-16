@@ -1,18 +1,42 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+    <script>
+
+    
+        function removeAlert(id){
+            if (confirm("Tem certeza que deseja excluir ?"))
+              {
+                document.getElementById("edit").action = "/controluser/remove/"+id;
+                document.getElementById("edit").submit();
+              }
+        }
+    
+    function mostra(id) {
+        some();
+        document.getElementById(id).style.display = 'inline';
+    }
+    
+    function some() {
+        document.getElementById("ma").style.display = 'none';
+        document.getElementById("mb").style.display = 'none';
+        //document.getElementById("mc").style.display = 'none';
+        
+    }
+    </script>
+    <!-- Fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
-        <!-- Fonts -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
         <!-- Styles -->
         <style>
@@ -66,6 +90,12 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+
+            .hidden{
+                display: none;
+            }
+        
+            
         </style>
     </head>
     <body>
@@ -75,48 +105,53 @@
                     O que deseja?
                 </div>
                 <div>
-                    <input type="radio" value="cadastrar" onclick="mostra('ma')" name="type"> Cadastrar</input>
-                    <input type="radio" value="editar" onclick="mostra('mb')" name="type"> Listar Funcionarios, editar e remover</input>
+                    <input type="radio" value="cadastrar" onclick="mostra('ma')" name="type"> Cadastrar
+                    <input type="radio" value="editar" onclick="mostra('mb')" name="type"/> Listar Funcionarios, editar e remover
                 </div>
-                    @if(session('message'))
-                    <div class="alert alert-success alert-dismissible">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    {{session('message')}}
-                    </div>
-                    @endif
-                    @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    {{session('error')}}
-                    <div></div>
-                    @endif
-                    @if(session('messages'))
-                    <div class="alert alert-success alert-dismissible">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    @foreach(session('messages') as $message)
-                    {{$message}}<br>
-                    @endforeach
-                    </div>
-                    @endif             
+                    
+                @if(session('message'))
+                <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{session('message')}}
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{session('error')}}
+                </div>
+                @endif
+
+                @if(session('messages'))
+                <div class="alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @foreach(session('messages') as $message)
+                {{$message}}<br>
+                @endforeach
+
+                </div>
+                @endif
+                      
                 <div>
                     <form method="post" id="regis">
                         {{ csrf_field() }}
                     <div id="ma" class="hidden">
                         <div class="row text-left flex-center position-ref">
                             <div class="col-md-2 ">
-                                    <label for="name" value="firstName">Nome</label>    
+                                    <label for="name" value="first_name">Nome</label>    
                             </div>
                             <div class="col-md-5">
-                                    <input type="text" name="firstName">
+                                    <input type="text" name="first_name">
                             </div>
                         </div>
 
                         <div class="row text-left flex-center position-ref">
                             <div class="col-md-2 ">
-                                <label for="lastName" value="lastName">Sobrenome</label>  
+                                <label for="lastName" value="last_name">Sobrenome</label>  
                             </div>
                             <div class="col-md-5">
-                               <input type="text" name="lastName">
+                               <input type="text" name="last_name">
                             </div>
                         </div>
 
@@ -138,7 +173,7 @@
                                     <option value="Masculino">Masculino</option>
                                     <option value="Feminino">Feminino</option>
                                 </select>
-                                <input name="register" type="hidden" value="1"></input>
+                                <input name="register" type="hidden" value="1">
 
                             </div>
                         </div>
@@ -178,41 +213,7 @@
                         </div>
                     </form>
                 </div>
-
-
-
-
-
-                
-            
             </div>
         </div>
     </body>
 </html>
-<style type="text/css">
-    .hidden{
-        display: none;
-    }
-
-</style>
-<script>
-    function removeAlert(id){
-        if (confirm("Tem certeza que deseja excluir ?"))
-          {
-            document.getElementById("edit").action = "/controluser/remove/"+id;
-            document.getElementById("edit").submit();
-          }
-    }
-
-function mostra(id) {
-    some();
-    document.getElementById(id).style.display = 'inline';
-}
-
-function some() {
-    document.getElementById("ma").style.display = 'none';
-    document.getElementById("mb").style.display = 'none';
-    //document.getElementById("mc").style.display = 'none';
-    
-}
-</script>

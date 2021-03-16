@@ -28,13 +28,14 @@ class UserController extends Controller
      
     public function show($id)
     {
-        //
+        return User::findOrFail($id);
     }
 
    
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->update($request->all());
     }
 
     

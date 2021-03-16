@@ -113,7 +113,7 @@
     function editAlert(){
         if (confirm("Tem certeza que deseja salvar ?"))
           {
-            document.getElementById("edit").action = "/controluser/datasEdited";
+            document.getElementById("edit").action = "/controluser/dataEdited";
             document.getElementById("edit").submit();
           }
     }

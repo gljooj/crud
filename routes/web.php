@@ -14,7 +14,7 @@
 Route::group(['prefix' => 'controluser'], function(){
  Route::get('/', 'UsersController@welcomeView');
     Route::post('/controlUser', 'UsersController@controlUser');
-	Route::post('/datasEdited', 'UsersController@datasEdited');
+	Route::post('/dataEdited', 'UsersController@dataEdited');
 	Route::get('/fi', 'UsersController@QuestaoDois');
 	Route::get('/editUser/{id}', 'UsersController@editUser');
 	Route::get('/remove/{id}', 'UsersController@remove');
