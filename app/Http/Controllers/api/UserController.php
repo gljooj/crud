@@ -14,11 +14,6 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function create()
-    {
-        //
-    }
-
 
     public function store(Request $request)
     {
@@ -31,22 +26,17 @@ class UserController extends Controller
         return User::findOrFail($id);
     }
 
-   
-    public function edit(Request $request, $id)
+    
+    public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $user->update($request->all());
     }
 
     
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
     }
 }

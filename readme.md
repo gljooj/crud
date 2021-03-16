@@ -2,26 +2,46 @@
 
 ## HOW TO RUN
 Ao clonar o projeto escreva os seguinte comando no seu terminal:
+    - cp .env.example .env  
     - composer install --ignore-platform-reqs
     - php artisan key:generate
 
-Após isso verifique as configs de banco seu .env e por fim escreva o seguinte comando em seu terminal:
+Após isso verifique as configs de banco seu .env, 
+    crie um database com o nome de laravel e por fim escreva o seguinte comando em seu terminal:
     - php artisan migrate
 
-Após isso já está tudo certo para usar o projeto bastar escrever:
-    - php artisan server
+Agora, já está tudo certo para usar o projeto bastar escrever:
+    - php artisan serve
 
 ## English sub
 After clone the project write the follow command's in you terminal:
+    - cp .env.example .env
     - composer install --ignore-platform-reqs
     - php artisan key:generate
 
-After this verify your configs database in .env and finally write the follow command in your terminal:
+After this verify your configs database in .env 
+    create a database with the name laravel and finally write the follow command in your terminal:
     - php artisan migrate
 
-After this is already, to run the project just write:
-    - php artisan server
+Now, to run the project just write:
+    - php artisan serve
 
+Access http://127.0.0.1:8000/
+
+## API examples
+
+    POST - http://127.0.0.1:8000/api/users/
+        BODY - {"first_name":"Gabriel","last_name":"Jesus","age":20,"gender":"Masculino"}
+    
+    PUT - http://127.0.0.1:8000/api/users/
+        BODY - {"first_name":"Julio","last_name":"Jesus","age":21,"gender":"Masculino"}
+    
+    GET - http://127.0.0.1:8000/api/users/
+
+    GET BY ID - http://127.0.0.1:8000/api/users/1
+
+    DELETE - http://127.0.0.1:8000/api/users/1
+    
 
 by - Gabriel Jesus
 email: gabrielthe13@hotmail.com
